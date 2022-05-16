@@ -1,13 +1,16 @@
 //#region Consts 
 const express = require('express');
 const app = express();
-const path = require('path');
-const Port = process.env.PORT || 8080;
+const cors = require('cors');
+const Port = process.env.PORT || 1434;
 const mysql = require('mysql2');
-const { json } = require('express/lib/response');
+const { json, send } = require('express/lib/response');
 const ServerLocation = 'http://localhost:'+Port;
+app.use(cors(
+  {origin:"*"}));
 //#endregion
 // mysql conection
+
 const conection = mysql.createConnection({
   user:'gregory',
   password:'elso',
@@ -27,50 +30,76 @@ app.listen(Port, () => {
     console.log(`Server is running on ${ServerLocation}`);
 });
 //app use templates
-app.use(express.static(path.join(__dirname, '/Templates')));
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, '/Templates'));
 app.get('/', (req, res)=> {
-  console.log('Peticion en /');
-  res.sendFile(path.join(__dirname + '/Templates/Index.html'));
-});
-app.get('/users/:id', (req, res)=> {
-  console.log('peticion get en /users');
-  var query = req.params.id==0? 'SELECT * FROM users':`SELECT * FROM users WHERE id = ${req.params.id}`;
+  console.log('peticion get en /');
+  var query =  'SELECT * FROM Messages';
+  console.log(query);
+  conection.query(query,(err,rows)=>{
+    if (err) {console.log(err,query);
+      res.status(500).send({error: err});
+      return;
+      }res.header('Access-Control-Allow-Private-Network').type('json').send(rows);
+  });
+}
+);
+function isNumber(n){
+  return Number(n)===n;
+}
+app.get('/:id', (req, res)=> {
+  console.log('peticion get en /');
+  if (!isNumber(req.params.id)) {
+    res.status(500).send('id debe ser un numero');
+    return;
+  }
+
+  var query = req.params.id==0? 'SELECT * FROM Messages':`SELECT * FROM Messages WHERE id = ${req.params.id}`;
   console.log(req.params.id); console.log(query);
   conection.query(query,(err,rows)=>{
-    if (err) console.log(err);
-    res.render('404.ejs',{current: ServerLocation+req.url, base: rows}); 
-  //  res.send(rows);
+    if (err) {console.log(err,query);
+      res.status(500).send({error: err});
+      return;
+      }
+    res.type('json').send(rows);
   });
 }
 ); 
+
 app.use(express.json());
-app.put('/users/:ID',(req,res)=>{
-  console.log('peticion put en /users');
-  const {Email, Passw,UType} = req.body;
-  var query = `UPDATE users SET Email = '${Email}', Passw = '${Passw}', UType = '${UType}' WHERE Id = ${req.params.ID}`;
+
+app.put('/',(req,res)=>{
+  console.log('peticion put en /');
+  const {Id,
+    Sender,
+    Reciver,
+    MText} = req.body;
+  var query = `update Messages set Sender = '${Sender}', Reciver = '${Reciver}', MText = '${MText}' where Id = ${Id}`;
   console.log(query);
   conection.query(query,(err,rows)=>{
     if (err) console.log(err);
     res.send({
-    ID: req.params.ID
+      message: 'Message updated successfully'
     });
   });
 }
 );
-app.post('/users', (req, res)=> {
+app.post('/', (req, res)=> {
   console.log('peticion post en /users');
-  const {Email, Passw,UType} = req.body;
-  var query = `INSERT INTO users (Id, Email, Passw, UType) VALUES (null, '${Email}', '${Passw}', '${UType}')`
+  const {
+    Sender,
+    Reciver,
+    MText} = req.body;
+  var query = `INSERT INTO Messages VALUES (null, '${Sender}', '${Reciver}', '${MText}')`
   console.log(query);
-  conection.query(query,(err,rows)=>{
-    if (err) console.log(err,query);
+  conection.query(query,(err, rows)=>{
+    if (err) {console.log(err,query);
+    res.status(500).send({error: err});
+    return;
+    }
     res.send({
       Id: rows.insertId,
-      Email: Email,
-      Passw: Passw,
-      UType: UType
+      Sender: Sender,
+      Reciver: Reciver,
+      MText: MText
     });
   });
 }
@@ -79,5 +108,5 @@ app.post('/users', (req, res)=> {
 app.use( (req, res) => {
   console.log('Peticion en 404');
   console.log(req.url);
-  res.status(404).render('404.ejs',{current: ServerLocation+req.url}); 
+  res.status(404).send('404'); 
 }) // 404 not found  when the page request doesnt exist

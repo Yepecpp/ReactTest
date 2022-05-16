@@ -54,21 +54,30 @@ body {
   width: 100%;
 }
 
-.task {
+.Messages {
   background: #f4f4f4;
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+  font-weight: bold;
+  /*Create a round border for this class*/
+  border-radius: 50px;
+}
+.Messages:hover {
+  border-radius: 10px;
+  background-color: navy;
+  color: #fff;
 }
 
-.task.reminder {
+.Messages.reminder {
   border-left: 5px solid green;
 }
 
-.task h3 {
+.Messages h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-weight: 0;
 }
 
 .add-form {

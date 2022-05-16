@@ -1,10 +1,11 @@
-import Header  from "./componets/Header";
+import Messages from './componets/Messages';
+import Header from './componets/header';
+
 function App() {
-  const name = 'Juan';
   return (
-    <div className="container">
-      <Header/>
-    <h1>Hey {name}</h1>
+    <div className='container'>
+    <Header text='Envia un mensaje a una persona querida tuya'/>
+    <Messages/>
     </div>
   );
 }

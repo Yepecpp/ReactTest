@@ -1,23 +1,21 @@
-import React from 'react'
-import propstypes from 'prop-types';
-import Button from './button.js';
-
-
- const Header = (props) => {
+import React from 'react';
+import propTypes from 'prop-types';
+import Button from './button';
+const header = ({className, text}) => {
   return (
-    <Header className= 'header'>
-        <h1>{props.title}</h1>
-        <Button className='btn' text='app' color='violet' onClick={(e)=>{
-        console.log('Hey');
-    }}/>
-     <Button className='btn' text='app' color='green' /> 
-    </Header>
+    <header className={className}>
+        <h1>{text}</h1>
+        <Button color='black' text='Reload'/>
+    </header>
+
   )
 }
-Header.defaultProps = {
-    title: 'Indecision App'
+
+header.defaultProps = {
+    className: 'header',
+    text: 'React Test'
 }
-Header.propTypes = {
-    title: propstypes.string.isRequired
+header.propTypes = {
+className: propTypes.string.isRequired
 }
-export default Header;
+export default header
