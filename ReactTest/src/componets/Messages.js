@@ -12,7 +12,7 @@ async function setdata (){
 setdata();
 },[]);
 return (
-
+<div className='MParent'>
    <>
    {messages.map((message) => (
        <div key={message.Id} className='Messages'>
@@ -21,6 +21,7 @@ return (
        </div>
    )
 )} </>
+</div>
 )
 }
 

@@ -23,7 +23,15 @@ conection.connect((err)=>{
   console.log('error en la conexion');
   return;
 }
-  console.log('conectado');
+console.log('conectado');
+var query =  'SELECT * FROM Messages';
+  console.log(query);
+  conection.query(query,(err,rows)=>{
+    if (err) {console.log(err,query);
+      return;
+      }console.log(rows);
+  });
+  
 }); 
 //Routes
 app.listen(Port, () => {

@@ -1,18 +1,14 @@
 import React from 'react'
 import propTypes from 'prop-types';
-const Button = ({onClick, className, color, text}) => {
+const Button = ({onClick, className, color, text, id}) => {
  
-  return <button onClick={onClick} className={className} style={{backgroundColor: color}}>{text}</button>
+  return <button onClick={onClick} className={className} style={{backgroundColor: color}} id={id}>{text}</button>
 
-}
-const oncli=(e)=>{
-  console.log('clicked');
 }
 Button.defaultProps = {
     className: 'btn',
     color: 'black',
     text: 'app',
-    onClick: oncli
 }
 Button.propTypes = {
     className: propTypes.string.isRequired,
