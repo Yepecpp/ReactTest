@@ -1,25 +1,25 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 server/package-lock.json
-ReactTest/package-lock.json
+client/package-lock.json
 # dependencies
-ReactTest/node_modules
+client/node_modules
 server/node_modules
-ReactTest/.pnp
-ReactTest.pnp.js
+client/.pnp
+client.pnp.js
 
 # testing
-ReactTest/coverage
+client/coverage
 
 # production
-ReactTest/build
+client/build
 
 # misc
-ReactTest/.DS_Store
-ReactTest/.env.local
-ReactTest/.env.development.local
-ReactTest/.env.test.local
-ReactTest/.env.production.local
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
 
-ReactTest/npm-debug.log*
-ReactTest/yarn-debug.log*
-ReactTest/yarn-error.log*
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
